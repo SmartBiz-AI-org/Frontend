@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("SUPABASE_DATABASE_URL")
+}
+
+// ------------------------------------------------------------------
+// BETTER-AUTH TABLES + ONBOARDING EXTENSION
+// ------------------------------------------------------------------
+model User {
+  id                  String    @id
+  name                String
+  email               String    @unique
+  emailVerified       Boolean
+  image               String?
+  createdAt           DateTime
+  updatedAt           DateTime
+  sessions            Session[]
+  accounts            Account[]
+  
+  // Custom SmartBiz Extension
+  onboardingCompleted Boolean   @default(false)
+
+  smes                Sme[]
+
+  @@map("user") // Maps exactly to Better-Auth's underlying table
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+// ------------------------------------------------------------------
+// SMARTBIZ MVP TABLES
+// ------------------------------------------------------------------
+
+model Sme {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName    String
+  slug            String   @unique
+  description     String?
+  nationalId      String?
+  cacRegistration String?
+  logoUrl         String?
+  aiTone          String   @default("professional")
+  language        String   @default("en-US")
+  autoInvoicing   Boolean  @default(true)
+  email           String
+  whatsapp        String
+  address         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  products        Product[]
+  invoices        Invoice[]
+  transactions    Transaction[]
+  chatSessions    ChatSession[]
+
+  @@map("sme")
+}
+
+model ChatSession {
+  id            String   @id @default(uuid())
+  smeId         String
+  sme           Sme      @relation(fields: [smeId], references: [id], onDelete: Cascade)
+  customerEmail String   @unique
+  messages      Json     @default("[]")
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+
+  @@map("chat_session")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  smeId       String
+  sme         Sme      @relation(fields: [smeId], references: [id], onDelete: Cascade)
+  name        String
+  sku         String?
+  price       Float
+  category    String?
+  size        String?
+  stock       Int      @default(1)
+  status      String   @default("Active")
+  description String?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("product")
+}
+
+model Invoice {
+  id              String   @id @default(uuid())
+  invoiceNumber   String   @unique
+  referenceNumber String   @unique
+  smeId           String
+  sme             Sme      @relation(fields: [smeId], references: [id], onDelete: Cascade)
+  customerName    String
+  customerEmail   String
+  items           Json     // Array of { name: string, quantity: number, price: number }
+  subtotal        Float
+  tax             Float
+  taxRate         Float    @default(0)
+  discount        Float
+  discountRate    Float    @default(0)
+  totalAmount     Float
+  status          String   @default("PENDING") // PAID, PENDING, OVERDUE, DRAFT
+  dueDate         DateTime
+  internalNotes   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("invoice")
+  transactions    Transaction[]
+}
+
+
+model Transaction {
+  id               String   @id @default(uuid())
+  smeId            String
+  sme              Sme      @relation(fields: [smeId], references: [id], onDelete: Cascade)
+  invoiceId        String?
+  invoice          Invoice? @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  customerName     String
+  customerEmail    String
+  customerWhatsapp String
+  items            Json     @default("[]")
+  totalAmount      Float
+  status           String   @default("PENDING")
+  paymentRef       String?
+  invoiceUrl       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("transaction")
+}
