@@ -17,6 +17,11 @@ For detailed technical guides, please refer to the specialized documentation:
 - [Backend Documentation](./project_documentations/BACKEND_DOCUMENTATION.md)
 - [UX/UI Documentation](./project_documentations/SmartBiz_UX_UI_Documentation.md)
 - [Product PDF Overview](./project_documentations/SmartBI%20AI%20PDF.pdf)
+- [https://www.figma.com/design/U6bCtSlZtaXM4KfQJaG4uo/SmartBiz-Ai?node-id=0-1&p=f&t=WefGkT4C3Qx0ooRt-0](Link to UI design)
+- [https://drive.google.com/drive/folders/1bPYUm4JjrvKxjA_8quFUNbyy6EXV10A9?usp=drive_link](Link to demo video)
+- [https://drive.google.com/drive/folders/1bPYUm4JjrvKxjA_8quFUNbyy6EXV10A9?usp=drive_link](Payment process video link)
+
+
 
 - **[Frontend Documentation](./FRONTEND_DOCUMENTATION.md)**: UI architecture, routing, and component organization.
 - **[Backend Documentation](./BACKEND_DOCUMENTATION.md)**: AI Tool Use, Payment Lifecycle, and Database Schema.
