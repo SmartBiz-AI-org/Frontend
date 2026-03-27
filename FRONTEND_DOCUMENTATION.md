@@ -17,7 +17,9 @@ The application is split into three route groups under `app/`:
 
 - `app/(website)` → public marketing and auth-related pages.
 - `app/dashboard` → authenticated product/dashboard application pages.
-- `app/(backend)/api` → API route handlers used by frontend flows (auth and onboarding/sign-up actions).
+- `app/store/[id]` → interactive AI storefront for customers.
+- `app/pay/[invoiceId]` → secure payment redirect flow.
+- `app/(backend)/api` → API route handlers used by frontend flows (auth, payment verify, and onboarding actions).
 
 Global layout and typography are configured in `app/layout.tsx`, while route-group-specific layouts define UI shells:
 
@@ -69,6 +71,9 @@ public/                   # Static images/icons/assets
 - `/` → marketing page composed from `Hero`, `Features`, `WhySmartBiz`, `Pricing`, `FAQSection`, and `CTA` sections.
 - `/login` and `/sign-up` → authentication screens.
 - `/onboarding` → business onboarding setup flow.
+- `/store/[id]` → branded AI sales assistant chat interface.
+- `/pay/[invoiceId]` → auto-submitting secure checkout redirect.
+- `/store/[slug]/success` → order confirmation and invoice summary.
 
 ### Dashboard Pages
 
@@ -148,8 +153,8 @@ When adding a new frontend feature, update the following where applicable:
 
 ## Notes
 
-- This documentation focuses on frontend architecture and workflow inside this repository.
 - If you add a new domain area (e.g., analytics, campaigns), follow the existing domain-folder component pattern.
+- For backend logic (AI Tool Use, Payments, Database), see [BACKEND_DOCUMENTATION.md](./BACKEND_DOCUMENTATION.md).
 
 
 Okeke Chinedu Emmanuel - Fullstack Developer
