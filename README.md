@@ -12,9 +12,15 @@ SmartBiz AI is a customizable, AI-driven platform that empowers Small and Medium
 ## 📚 Documentation
 
 For detailed technical guides, please refer to the specialized documentation:
+- [Main Project Documentation](./project_documentations/SmartBiz_AI_Documentation.md)
+- [Frontend Documentation](./project_documentations/FRONTEND_DOCUMENTATION.md)
+- [Backend Documentation](./project_documentations/BACKEND_DOCUMENTATION.md)
+- [UX/UI Documentation](./project_documentations/SmartBiz_UX_UI_Documentation.md)
+- [Product PDF Overview](./project_documentations/SmartBI%20AI%20PDF.pdf)
 
 - **[Frontend Documentation](./FRONTEND_DOCUMENTATION.md)**: UI architecture, routing, and component organization.
 - **[Backend Documentation](./BACKEND_DOCUMENTATION.md)**: AI Tool Use, Payment Lifecycle, and Database Schema.
+
 
 ## 🛠️ Getting Started
 
